@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <server>
+        <server_ip>0.0.0.0</server_ip>
+        <server_port>10088</server_port>
+        <doc_root>.</doc_root>
+        <threads>4</threads>
+        <robot_ip>192.168.1.235:8080</robot_ip>
+        <robot_port>8080</robot_port>
+        <timeout>2000</timeout>
+        <take_photo_times>3</take_photo_times>
+    </server>
+</root>

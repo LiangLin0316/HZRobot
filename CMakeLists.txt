@@ -1,0 +1,41 @@
+cmake_minimum_required(VERSION 3.5)
+project(RobotAi)
+set(CMAKE_CXX_STANDARD 11)
+
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Include/common)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Include/mysql/Header)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Include/net)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Include/shine_serial)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Include/util)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Include/http/Header)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Include/com/Header)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Include/task/Header)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Include/queue)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Include/robot_config/Header)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Include/http/hpp)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/Include/xml/Header)
+
+
+LINK_DIRECTORIES(/usr/lib)
+LINK_DIRECTORIES(/usr/local/lib)
+LINK_DIRECTORIES(/usr/local/mysql/lib)
+LINK_DIRECTORIES(./Bin)
+LINK_LIBRARIES(dl)
+LINK_LIBRARIES(pthread)
+LINK_LIBRARIES(boost_thread)
+LINK_LIBRARIES(mysqlclient_r)
+
+aux_source_directory(. DIR_MAIN_SRCS)
+aux_source_directory(Include/http/Source DIR_HTTP_SRCS)
+
+aux_source_directory(${PROJECT_SOURCE_DIR}/Include/com/Source DIR_COM_SRCS)
+aux_source_directory(${PROJECT_SOURCE_DIR}/Include/task/Source DIR_TASK_SRCS)
+aux_source_directory(${PROJECT_SOURCE_DIR}/Include/xml/Source DIR_XML_SRCS)
+aux_source_directory(${PROJECT_SOURCE_DIR}/Include/robot_config/Source DIR_CONFIG_SRCS)
+aux_source_directory(${PROJECT_SOURCE_DIR}/Include/mysql/Source DIR_MYSQL_SRCS)
+
+
+add_definitions(-D __linux__)
+add_compile_options(-fpermissive)
+add_executable(RobotAi ${DIR_HTTP_SRCS} ${DIR_MAIN_SRCS} ${DIR_COM_SRCS} ${DIR_TASK_SRCS} ${DIR_XML_SRCS} ${DIR_CONFIG_SRCS} ${DIR_MYSQL_SRCS})
+#target_link_libraries(RobotAi mysqlclient_r )

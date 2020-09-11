@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <table_xx>
+        <row num="3">
+            <camtype no="1">12</camtype>
+            <camtype no="2">13</camtype>
+            <camtype no="3">14</camtype>
+        </row>
+        <row num="3">
+            <camtype no="1">12</camtype>
+            <camtype no="2">13</camtype>
+            <camtype no="3">14</camtype>
+        </row>
+    </table_xx>
+</root>

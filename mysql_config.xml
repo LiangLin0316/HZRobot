@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <databases>
+        <user>liang</user>
+        <password>SHANER789</password>
+        <server_ip>118.24.36.58</server_ip>
+        <port>3306</port>
+        <dbname>HZRobot</dbname>
+    </databases>
+</root>
