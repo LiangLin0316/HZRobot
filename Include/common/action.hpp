@@ -20,6 +20,7 @@
 #define action_photo_success "拍照任务执行成功"
 #define action_continhue_success "成功发送继续执行给机器人"
 #define action_continhue_faild "发送继续执行给机器人失败"
+#define action_num_unsuccess "拍照未执行成功,调整后重新拍照"
 
 
 //拍照

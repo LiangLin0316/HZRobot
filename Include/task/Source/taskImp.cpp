@@ -4,7 +4,6 @@
 #include"taskImp.h"
 #include "./../common/action.hpp"
 #include "../../robot_config/Header/config.h"
-#include "../../http/Header/HttpServer.h"
 #include "../../http/hpp/http_client.hpp"
 #include "../../mysql/Header/mysql_logs.h"
 
@@ -69,7 +68,7 @@ void TaskBase::setisvaild(bool flag)
     mysql_logs *mysq_log = mysql_logs::mysql_instance();
     shine::http::sync_client sync_c;
     sync_c.set_recv_timeout(config->ser_config.timeout);
-    sync_c.get_request().set_host(config->ser_config.robot_ip+config->ser_config.robot_port);
+    sync_c.get_request().set_host(config->ser_config.ea_ip+config->ser_config.ea_port);
     sync_c.get_request().set_method(http_method_post);
     sync_c.get_request().set_content_type(http_content_json);
     sync_c.get_request().set_body(shine::string(body));

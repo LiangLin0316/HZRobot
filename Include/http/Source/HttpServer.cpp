@@ -180,7 +180,7 @@ handle_request(
         std::cout << "transform to robot" << std::endl;
         shine::http::sync_client sync_c;
         sync_c.set_recv_timeout(config->ser_config.timeout);
-        sync_c.get_request().set_host(config->ser_config.robot_ip);
+        sync_c.get_request().set_host(config->ser_config.robot_ip+":"+config->ser_config.robot_port);
 
         beast::string_view beast_type = req[http::field::content_type];
         if (!beast_type.empty()) {

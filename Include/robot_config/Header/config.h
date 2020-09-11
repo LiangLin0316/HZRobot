@@ -29,12 +29,6 @@ typedef struct {
 } mysql_config;
 
 
-typedef struct {
-    watch_type type;
-    std::map<std::vector<camtype>, std::vector<camtype>> one_photo_range;
-    int count;
-} photo_config;
-
 
 typedef struct {
     std::string server_ip;
@@ -43,6 +37,8 @@ typedef struct {
     int threads;
     std::string robot_ip;
     std::string robot_port;
+    std::string ea_ip;
+    std::string ea_port;
     int timeout;
     int cn_photo;
 }server_config;
@@ -61,13 +57,13 @@ struct st_robot_ip
 
  struct ea_photo_L2{
     int type;
+    int tablenum;
     std::map<std::string , ea_photo_L1 >param;
-    SHINE_JSON_MODEL(ea_photo_L2, type,param);
+    SHINE_JSON_MODEL(ea_photo_L2, type,tablenum,param);
 } ;
 
 class Config {
 public:
-    photo_config p_conifg;
     mysql_config sql_config;
     server_config ser_config;
 
@@ -130,6 +126,7 @@ public:
             pElem = hDoc.FirstChildElement().Element();
             TiXmlHandle hRoot(pElem);
             TiXmlElement *CNode = hRoot.FirstChild("table_xx").FirstChild().Element();
+            photo_config.tablenum = 0;
 
             ea_photo_L1 vvm_tmp;
             std::vector<std::map<std::string, int>> vm_tmp;
@@ -143,11 +140,13 @@ public:
                 {
                     m_tmp.clear();
                     m_tmp.insert(std::make_pair(CAMTYPE,atoi(Child_CNode->GetText())));
+                    photo_config.tablenum++;
                     vm_tmp.push_back(m_tmp);
                 }
                 vvm_tmp.param.push_back(vm_tmp);
             }
             photo_config.param["row"] = vvm_tmp;
+
             auto C_str =  photo_config.json_encode();
             std::cout << C_str<< std::endl;
         }
@@ -179,6 +178,10 @@ public:
             ser_config.threads = atoi(Cnode->GetText());
             Cnode = hRoot.FirstChild("server").FirstChild("robot_ip").Element();
             ser_config.robot_ip =  (const char *) Cnode->GetText();
+            Cnode = hRoot.FirstChild("server").FirstChild("ea_ip").Element();
+            ser_config.ea_ip =  (const char *) Cnode->GetText();
+            Cnode = hRoot.FirstChild("server").FirstChild("ea_port").Element();
+            ser_config.ea_port =  (const char *) Cnode->GetText();
             Cnode = hRoot.FirstChild("server").FirstChild("robot_port").Element();
             ser_config.robot_port =  (const char *) Cnode->GetText();
             Cnode = hRoot.FirstChild("server").FirstChild("timeout").Element();
