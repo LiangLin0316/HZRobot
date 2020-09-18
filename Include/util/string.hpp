@@ -17,45 +17,45 @@
 #endif
 
 static const std::string base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-"abcdefghijklmnopqrstuvwxyz"
-"0123456789+/";
+                                        "abcdefghijklmnopqrstuvwxyz"
+                                        "0123456789+/";
 
 static const char* shine_url_encode_table[256] = {
-	"%00", "%01", "%02", "%03", "%04", "%05", "%06", "%07", "%08", "%09", "%0A", "%0B", "%0C", "%0D", "%0E", "%0F",
-	"%10", "%11", "%12", "%13", "%14", "%15", "%16", "%17", "%18", "%19", "%1A", "%1B", "%1C", "%1D", "%1E", "%1F",
-	"%20", "!", "%22", "%23", "$", "%25", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/",
-	"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";", "%3C", "=", "%3E", "?",
-	"@", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
-	"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "%5B", "%5C", "%5D", "%5E", "_",
-	"%60", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
-	"p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "%7B", "%7C", "%7D", "%7E", "%7F",
-	"%80", "%81", "%82", "%83", "%84", "%85", "%86", "%87", "%88", "%89", "%8A", "%8B", "%8C", "%8D", "%8E", "%8F",
-	"%90", "%91", "%92", "%93", "%94", "%95", "%96", "%97", "%98", "%99", "%9A", "%9B", "%9C", "%9D", "%9E", "%9F",
-	"%A0", "%A1", "%A2", "%A3", "%A4", "%A5", "%A6", "%A7", "%A8", "%A9", "%AA", "%AB", "%AC", "%AD", "%AE", "%AF",
-	"%B0", "%B1", "%B2", "%B3", "%B4", "%B5", "%B6", "%B7", "%B8", "%B9", "%BA", "%BB", "%BC", "%BD", "%BE", "%BF",
-	"%C0", "%C1", "%C2", "%C3", "%C4", "%C5", "%C6", "%C7", "%C8", "%C9", "%CA", "%CB", "%CC", "%CD", "%CE", "%CF",
-	"%D0", "%D1", "%D2", "%D3", "%D4", "%D5", "%D6", "%D7", "%D8", "%D9", "%DA", "%DB", "%DC", "%DD", "%DE", "%DF",
-	"%E0", "%E1", "%E2", "%E3", "%E4", "%E5", "%E6", "%E7", "%E8", "%E9", "%EA", "%EB", "%EC", "%ED", "%EE", "%EF",
-	"%F0", "%F1", "%F2", "%F3", "%F4", "%F5", "%F6", "%F7", "%F8", "%F9", "%FA", "%FB", "%FC", "%FD", "%FE", "%FF"
+        "%00", "%01", "%02", "%03", "%04", "%05", "%06", "%07", "%08", "%09", "%0A", "%0B", "%0C", "%0D", "%0E", "%0F",
+        "%10", "%11", "%12", "%13", "%14", "%15", "%16", "%17", "%18", "%19", "%1A", "%1B", "%1C", "%1D", "%1E", "%1F",
+        "%20", "!", "%22", "%23", "$", "%25", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/",
+        "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";", "%3C", "=", "%3E", "?",
+        "@", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
+        "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "%5B", "%5C", "%5D", "%5E", "_",
+        "%60", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
+        "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "%7B", "%7C", "%7D", "%7E", "%7F",
+        "%80", "%81", "%82", "%83", "%84", "%85", "%86", "%87", "%88", "%89", "%8A", "%8B", "%8C", "%8D", "%8E", "%8F",
+        "%90", "%91", "%92", "%93", "%94", "%95", "%96", "%97", "%98", "%99", "%9A", "%9B", "%9C", "%9D", "%9E", "%9F",
+        "%A0", "%A1", "%A2", "%A3", "%A4", "%A5", "%A6", "%A7", "%A8", "%A9", "%AA", "%AB", "%AC", "%AD", "%AE", "%AF",
+        "%B0", "%B1", "%B2", "%B3", "%B4", "%B5", "%B6", "%B7", "%B8", "%B9", "%BA", "%BB", "%BC", "%BD", "%BE", "%BF",
+        "%C0", "%C1", "%C2", "%C3", "%C4", "%C5", "%C6", "%C7", "%C8", "%C9", "%CA", "%CB", "%CC", "%CD", "%CE", "%CF",
+        "%D0", "%D1", "%D2", "%D3", "%D4", "%D5", "%D6", "%D7", "%D8", "%D9", "%DA", "%DB", "%DC", "%DD", "%DE", "%DF",
+        "%E0", "%E1", "%E2", "%E3", "%E4", "%E5", "%E6", "%E7", "%E8", "%E9", "%EA", "%EB", "%EC", "%ED", "%EE", "%EF",
+        "%F0", "%F1", "%F2", "%F3", "%F4", "%F5", "%F6", "%F7", "%F8", "%F9", "%FA", "%FB", "%FC", "%FD", "%FE", "%FF"
 };
 
 static unsigned char shine_url_decode_table[256] = {
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  0,  0,  0,  0,  0,  0,
-	0, 10, 11, 12, 13, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0, 10, 11, 12, 13, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-	0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  0,  0,  0,  0,  0,  0,
+        0, 10, 11, 12, 13, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0, 10, 11, 12, 13, 14, 15,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+        0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 };
 
 namespace shine
@@ -177,25 +177,25 @@ namespace shine
             return (LDouble)::atof(this->c_str());
         }
 
-		operator const char*() const {
-			return c_str();
-		}
+        operator const char*() const {
+            return c_str();
+        }
 
-		operator char*() const {
-			return (char*)data();
-		}
+        operator char*() const {
+            return (char*)data();
+        }
 
-		operator void*() const {
-			return (void*)data();
-		}
+        operator void*() const {
+            return (void*)data();
+        }
 
-		char & operator [] (int32 pos) {
-			return at(pos);
-		}
+        char & operator [] (int32 pos) {
+            return at(pos);
+        }
 
-		const char& operator [] (int32 pos) const {
-			return at(pos);
-		}
+        const char& operator [] (int32 pos) const {
+            return at(pos);
+        }
 
         string &operator=(const string &v){
             std::string::assign(v.data(), v.size());
@@ -414,52 +414,52 @@ namespace shine
             return *this;
         }
 
-		static std::vector<string> split(const string &str, const std::string &des) {
-			std::vector<string> ret;
-			std::string::size_type des_len = des.size();
-			std::string::size_type begin = 0;
-			std::string::size_type end = str.find(des, begin);
+        static std::vector<string> split(const string &str, const std::string &des) {
+            std::vector<string> ret;
+            std::string::size_type des_len = des.size();
+            std::string::size_type begin = 0;
+            std::string::size_type end = str.find(des, begin);
 
-			while (end != std::string::npos)
-			{
-				ret.push_back(str.substr(begin, end - begin));
-				begin = end + des_len;
-				end = str.find(des, begin);
-			}
+            while (end != std::string::npos)
+            {
+                ret.push_back(str.substr(begin, end - begin));
+                begin = end + des_len;
+                end = str.find(des, begin);
+            }
 
-			ret.push_back(str.substr(begin, end));
+            ret.push_back(str.substr(begin, end));
 
-			return ret;
-		}
+            return ret;
+        }
 
-		std::vector<string> split(const std::string &des) const {
-			return std::move(split(*this, des));
-		}
+        std::vector<string> split(const std::string &des) const {
+            return std::move(split(*this, des));
+        }
 
 
-		static std::set<string> split2(const string &str, const std::string &des) {
-			std::set<string> ret;
-			std::string::size_type des_len = des.size();
-			std::string::size_type begin = 0;
-			std::string::size_type end = str.find(des, begin);
+        static std::set<string> split2(const string &str, const std::string &des) {
+            std::set<string> ret;
+            std::string::size_type des_len = des.size();
+            std::string::size_type begin = 0;
+            std::string::size_type end = str.find(des, begin);
 
-			while (end != std::string::npos)
-			{
-				ret.emplace(str.substr(begin, end - begin));
-				begin = end + des_len;
-				end = str.find(des, begin);
-			}
+            while (end != std::string::npos)
+            {
+                ret.emplace(str.substr(begin, end - begin));
+                begin = end + des_len;
+                end = str.find(des, begin);
+            }
 
-			ret.emplace(str.substr(begin, end));
+            ret.emplace(str.substr(begin, end));
 
-			return ret;
-		}
+            return ret;
+        }
 
-		std::set<string> split2(const std::string &des) const {
-			return std::move(split2(*this, des));
-		}
+        std::set<string> split2(const std::string &des) const {
+            return std::move(split2(*this, des));
+        }
 
-		static size_type assert_size(const int8 *fmt, va_list args)
+        static size_type assert_size(const int8 *fmt, va_list args)
         {
 #if (defined SHINE_OS_WINDOWS)
 #pragma warning(disable:4996)
@@ -475,14 +475,14 @@ namespace shine
         static string format_create(const int8 *fmt, ...){
             string ret;
             va_list args;
-            va_start(args, fmt);
+                    va_start(args, fmt);
             size_type size = assert_size(fmt, args);
-            va_end(args);
+                    va_end(args);
 
-            va_start(args, fmt);
+                    va_start(args, fmt);
             ret.resize(size + 1);
             format(ret, fmt, args);
-            va_end(args);
+                    va_end(args);
 
             ret.resize(size);
             return std::move(ret);
@@ -490,14 +490,14 @@ namespace shine
 
         string& format(const int8 *fmt, ...){
             va_list args;
-            va_start(args, fmt);
+                    va_start(args, fmt);
             size_type size = assert_size(fmt, args);
-            va_end(args);
+                    va_end(args);
 
-            va_start(args, fmt);
+                    va_start(args, fmt);
             resize(size + 1);
             format(*this, fmt, args);
-            va_end(args);
+                    va_end(args);
 
             resize(size);
 
@@ -508,14 +508,14 @@ namespace shine
         string& format_append(const int8 *fmt, ...){
             string tmp;
             va_list args;
-            va_start(args, fmt);
+                    va_start(args, fmt);
             size_type size = assert_size(fmt, args);
-            va_end(args);
+                    va_end(args);
 
-            va_start(args, fmt);
+                    va_start(args, fmt);
             tmp.resize(size + 1);
             format(tmp, fmt, args);
-            va_end(args);
+                    va_end(args);
             tmp.resize(size);
 
             append(tmp);
@@ -572,101 +572,101 @@ namespace shine
             return find(text) != std::string::npos;
         }
 
-		static bool is_utf8(const char* str, std::size_t length)
-		{
-			std::size_t i = 0;
-			unsigned char bytes = 0;
-			unsigned char chr;
-			bool all_ascii = true; 
+        static bool is_utf8(const char* str, std::size_t length)
+        {
+            std::size_t i = 0;
+            unsigned char bytes = 0;
+            unsigned char chr;
+            bool all_ascii = true;
 
-			for (i = 0; i < length; i++)
-			{
-				chr = *(str + i);
+            for (i = 0; i < length; i++)
+            {
+                chr = *(str + i);
 
-				if ((chr & 0x80) != 0)
-					all_ascii = false;
+                if ((chr & 0x80) != 0)
+                    all_ascii = false;
 
-				if (bytes == 0) 
-				{
-					if (chr >= 0x80)
-					{
-						if (chr >= 0xFC && chr <= 0xFD)
-							bytes = 6;
-						else if (chr >= 0xF8)
-							bytes = 5;
-						else if (chr >= 0xF0)
-							bytes = 4;
-						else if (chr >= 0xE0)
-							bytes = 3;
-						else if (chr >= 0xC0)
-							bytes = 2;
-						else
-						{
-							return false;
-						}
-						bytes--;
-					}
-				}
-				else
-				{
-					if ((chr & 0xC0) != 0x80)
-					{
-						return false;
-					}
-					bytes--;
-				}
-			}
+                if (bytes == 0)
+                {
+                    if (chr >= 0x80)
+                    {
+                        if (chr >= 0xFC && chr <= 0xFD)
+                            bytes = 6;
+                        else if (chr >= 0xF8)
+                            bytes = 5;
+                        else if (chr >= 0xF0)
+                            bytes = 4;
+                        else if (chr >= 0xE0)
+                            bytes = 3;
+                        else if (chr >= 0xC0)
+                            bytes = 2;
+                        else
+                        {
+                            return false;
+                        }
+                        bytes--;
+                    }
+                }
+                else
+                {
+                    if ((chr & 0xC0) != 0x80)
+                    {
+                        return false;
+                    }
+                    bytes--;
+                }
+            }
 
-			if (bytes > 0)
-			{
-				return false;
-			}
+            if (bytes > 0)
+            {
+                return false;
+            }
 
-			if (all_ascii) 
-			{
-				return false;
-			}
+            if (all_ascii)
+            {
+                return false;
+            }
 
-			return true;
-		}
+            return true;
+        }
 
 
 #if !(defined SHINE_OS_ANDROID)
 #ifdef SHINE_OS_WINDOWS
-		static void gbk_to_utf8(const string& gbk, string &utf8)
-		{
-			WCHAR * str1;
-			int n = MultiByteToWideChar(CP_ACP, 0, gbk.c_str(), -1, NULL, 0);
-			str1 = new WCHAR[n];
-			MultiByteToWideChar(CP_ACP, 0, gbk.c_str(), -1, str1, n);
-			n = WideCharToMultiByte(CP_UTF8, 0, str1, -1, NULL, 0, NULL, NULL);
-			char * str2 = new char[n];
-			WideCharToMultiByte(CP_UTF8, 0, str1, -1, str2, n, NULL, NULL);
-			utf8 = str2;
-			delete[]str1;
-			str1 = NULL;
-			delete[]str2;
-			str2 = NULL;
-		}
+        static void gbk_to_utf8(const string& gbk, string &utf8)
+        {
+            WCHAR * str1;
+            int n = MultiByteToWideChar(CP_ACP, 0, gbk.c_str(), -1, NULL, 0);
+            str1 = new WCHAR[n];
+            MultiByteToWideChar(CP_ACP, 0, gbk.c_str(), -1, str1, n);
+            n = WideCharToMultiByte(CP_UTF8, 0, str1, -1, NULL, 0, NULL, NULL);
+            char * str2 = new char[n];
+            WideCharToMultiByte(CP_UTF8, 0, str1, -1, str2, n, NULL, NULL);
+            utf8 = str2;
+            delete[]str1;
+            str1 = NULL;
+            delete[]str2;
+            str2 = NULL;
+        }
 
-		static void utf8_to_gbk(const string& utf8, string &gbk)
-		{
-			int len = MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, NULL, 0);
-			unsigned short * wsz_gbk = new unsigned short[len + 1];
-			memset(wsz_gbk, 0, len * 2 + 2);
-			MultiByteToWideChar(CP_UTF8, 0, (LPCTSTR)utf8.c_str(), -1, (LPWSTR)wsz_gbk, len);
+        static void utf8_to_gbk(const string& utf8, string &gbk)
+        {
+            int len = MultiByteToWideChar(CP_UTF8, 0, utf8.c_str(), -1, NULL, 0);
+            unsigned short * wsz_gbk = new unsigned short[len + 1];
+            memset(wsz_gbk, 0, len * 2 + 2);
+            MultiByteToWideChar(CP_UTF8, 0, (LPCTSTR)utf8.c_str(), -1, (LPWSTR)wsz_gbk, len);
 
-			len = WideCharToMultiByte(CP_ACP, 0, (LPCWCH)wsz_gbk, -1, NULL, 0, NULL, NULL);
-			char *sz_gbk = new char[len + 1];
-			memset(sz_gbk, 0, len + 1);
-			WideCharToMultiByte(CP_ACP, 0, (LPCWCH)wsz_gbk, -1, sz_gbk, len, NULL, NULL);
+            len = WideCharToMultiByte(CP_ACP, 0, (LPCWCH)wsz_gbk, -1, NULL, 0, NULL, NULL);
+            char *sz_gbk = new char[len + 1];
+            memset(sz_gbk, 0, len + 1);
+            WideCharToMultiByte(CP_ACP, 0, (LPCWCH)wsz_gbk, -1, sz_gbk, len, NULL, NULL);
 
-			gbk = sz_gbk;
-			delete[]sz_gbk;
-			delete[]wsz_gbk;
-		}
+            gbk = sz_gbk;
+            delete[]sz_gbk;
+            delete[]wsz_gbk;
+        }
 #elif (defined SHINE_OS_LINUX || defined SHINE_OS_APPLE)
-		static void convert(const char* from, const char *to, const string &input, string &output) {
+        static void convert(const char* from, const char *to, const string &input, string &output) {
 			output.clear();
 			size_t input_len = input.length();
 			if (input_len == 0)
@@ -696,19 +696,19 @@ namespace shine
 		}
 
 #endif
-		string gbk_to_utf8() const {
-			string utf8;
-			gbk_to_utf8(*this, utf8);
-			return std::move(utf8);
-		}
+        string gbk_to_utf8() const {
+            string utf8;
+            gbk_to_utf8(*this, utf8);
+            return std::move(utf8);
+        }
 
-		string utf8_to_gbk() const {
-			string gbk;
-			utf8_to_gbk(*this, gbk);
-			return std::move(gbk);
-		}
+        string utf8_to_gbk() const {
+            string gbk;
+            utf8_to_gbk(*this, gbk);
+            return std::move(gbk);
+        }
 #endif
-		static string print_hex_string(const string &str) {
+        static string print_hex_string(const string &str) {
             static const uint8 buf[] = "0123456789ABCDEF";
             string ret;
             for (size_t i = 0; i < str.size(); i++)
@@ -716,7 +716,7 @@ namespace shine
                 if (i > 0 && i % 8 == 0)
                     ret += ' ';
 
-                uint32 index = (uint8)str[i];
+                uint32 index = (uint8)str[(int32)i];
                 ret += buf[index >> 4];
                 ret += buf[index & 0xF];
                 ret += ' ';
@@ -840,44 +840,44 @@ namespace shine
             return std::move(ret);
         }
 
-		static string encode_url(const char *url) {
-			string ret;
+        static string encode_url(const char *url) {
+            string ret;
 
-			unsigned char *data = (unsigned char *)url;
-			while (*data)
-			{
-				ret.append(shine_url_encode_table[*data++]);
-			}
+            unsigned char *data = (unsigned char *)url;
+            while (*data)
+            {
+                ret.append(shine_url_encode_table[*data++]);
+            }
 
-			return std::move(ret);
-		}
+            return std::move(ret);
+        }
 
-		static bool decode_url(string &ret, const char *url) {
-			ret.clear();
-			int len = strlen(url);
-			int pos = 0;
-			unsigned char *data = (unsigned char *)url;
-			while (data[pos])
-			{
-				if (data[pos] == '%')
-				{
-					if (len >= pos + 2 && isalnum(data[pos + 1]) && isalnum(data[pos + 2]))
-					{
-						ret += (unsigned char)((shine_url_decode_table[(unsigned char)data[pos + 1]] << 4)
-							+ shine_url_decode_table[(unsigned char)data[pos + 2]]);
-						pos += 3;
-					}
-					else {
-						return false;
-					}
-				}
-				else {
-					ret += data[pos++];
-				}
-			}
+        static bool decode_url(string &ret, const char *url) {
+            ret.clear();
+            int len = (int32)strlen(url);
+            int pos = 0;
+            unsigned char *data = (unsigned char *)url;
+            while (data[pos])
+            {
+                if (data[pos] == '%')
+                {
+                    if (len >= pos + 2 && isalnum(data[pos + 1]) && isalnum(data[pos + 2]))
+                    {
+                        ret += (unsigned char)((shine_url_decode_table[(unsigned char)data[pos + 1]] << 4)
+                                               + shine_url_decode_table[(unsigned char)data[pos + 2]]);
+                        pos += 3;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                else {
+                    ret += data[pos++];
+                }
+            }
 
-			return true;
-		}
+            return true;
+        }
 
     private:
         static inline bool is_base64(uint8 c) {
@@ -894,23 +894,3 @@ namespace shine
     };
 
 }
-
-/*
-
-namespace std{
-
-// TEMPLATE STRUCT SPECIALIZATION hash
-template<>
-struct hash<shine::string>
-    : public unary_function<std::string, size_t>
-{	// hash functor for basic_string
-    typedef shine::string _Kty;
-
-    size_t operator()(const _Kty& _Keyval) const
-    {	// hash _Keyval to size_t value by pseudorandomizing transform
-        return (_Hash_seq((const unsigned char *)_Keyval.c_str(),
-            _Keyval.size() * sizeof (char)));
-    }
-};
-
-}*/

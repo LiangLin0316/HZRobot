@@ -77,7 +77,7 @@ namespace shine
                         return true;
                     }
 
-                    if (get_decode_step() == http::e_decode_header)
+                    if (get_decode_step() == http::e_decode_header || get_decode_step() == http::e_decode_done)
                     {
                         auto pos = get_buf().find("\r\n\r\n", get_buf_pos());
                         if (pos == string::npos)
@@ -98,46 +98,47 @@ namespace shine
 
                     if (get_decode_step() == http::e_decode_body)
                     {
-						if (!get_response().get_is_chunk()) {
-							if (get_response().get_content_length() > get_buf().size() - get_buf_pos())
-								return true;
+                        if (!get_response().get_is_chunk()) {
+                            if (get_response().get_content_length() > get_buf().size() - get_buf_pos())
+                                return true;
 
-							get_response().get_body().assign(get_buf().data() + get_buf_pos(), get_buf().size() - get_buf_pos());
-							set_buf_pos(get_buf_pos() + get_response().get_content_length());
-						}
-						else {
-							shine::string &buf = get_buf();
-							shine::size_t pos = get_buf_pos();
-							shine::string &body = get_response().get_body();
-							body.clear();
+                            get_response().get_body().assign(get_buf().data() + get_buf_pos(), get_buf().size() - get_buf_pos());
+                            set_buf_pos(get_buf_pos() + get_response().get_content_length());
+                        }
+                        else {
+                            shine::string &buf = get_buf();
+                            shine::size_t &pos = get_buf_pos();
+                            shine::string &body = get_response().get_body();
+                            body.clear();
 
-							while (true) {
-								auto flag = buf.find("\r\n", pos);
-								if (flag != shine::string::npos) {
-									shine::string tmp = buf.substr(pos, flag - pos);
-									pos = flag + 2;
-									std::size_t len = htoi(tmp.c_str());
+                            while (true) {
+                                auto flag = buf.find("\r\n", pos);
+                                if (flag != shine::string::npos) {
+                                    shine::string tmp = buf.substr(pos, flag - pos);
+                                    pos = flag + 2;
+                                    std::size_t len = htoi(tmp.c_str());
 
-									if (len > 0) {
-										if (buf.size() < pos + len + 2)
-										{
-											return true;
-										}
+                                    if (len > 0) {
+                                        if (buf.size() < pos + len + 2)
+                                        {
+                                            return true;
+                                        }
 
-										body.append(buf.data() + pos, len);
-										pos += len + 2;
-									}
-									else
-									{
-										break;
-									}
+                                        body.append(buf.data() + pos, len);
+                                        pos += len + 2;
+                                    }
+                                    else
+                                    {
+                                        pos += len + 2;
+                                        break;
+                                    }
 
-								}
-								else {
-									return true;
-								}
-							}
-						}
+                                }
+                                else {
+                                    return true;
+                                }
+                            }
+                        }
 
                         if (get_sync_mode())
                         {
@@ -159,16 +160,16 @@ namespace shine
             }
 
         private:
-            SHINE_GEN_MEMBER_GETSET(socket_t, socket_fd, = invalid_socket);
-            SHINE_GEN_MEMBER_GETSET(bool, sync_mode, = false);
-            SHINE_GEN_MEMBER_GETSET(uint32, recv_timeout, = 3000);
-            SHINE_GEN_MEMBER_GETSET(uint8, decode_step, = http::e_decode_header);
-            SHINE_GEN_MEMBER_GETSET(shine::string, buf);
-            SHINE_GEN_MEMBER_GETSET(shine::size_t, buf_pos, = 0);
+        SHINE_GEN_MEMBER_GETSET(socket_t, socket_fd, = invalid_socket);
+        SHINE_GEN_MEMBER_GETSET(bool, sync_mode, = false);
+        SHINE_GEN_MEMBER_GETSET(uint32, recv_timeout, = 3000);
+        SHINE_GEN_MEMBER_GETSET(uint8, decode_step, = http::e_decode_header);
+        SHINE_GEN_MEMBER_GETSET(shine::string, buf);
+        SHINE_GEN_MEMBER_GETSET(shine::size_t, buf_pos, = 0);
 
-            SHINE_GEN_MEMBER_GETREG(response_handle_t, response_handle);
-            SHINE_GEN_MEMBER_GETSET(http::request, request);
-            SHINE_GEN_MEMBER_GETSET(http::response, response);
+        SHINE_GEN_MEMBER_GETREG(response_handle_t, response_handle);
+        SHINE_GEN_MEMBER_GETSET(http::request, request);
+        SHINE_GEN_MEMBER_GETSET(http::response, response);
         };
 
         class async_client : public client_base
@@ -239,7 +240,7 @@ namespace shine
             }
 
         private:
-            SHINE_GEN_MEMBER_GETSET(connection_t, connection);
+        SHINE_GEN_MEMBER_GETSET(connection_t, connection);
         };
 
         class sync_client : public client_base
@@ -328,6 +329,7 @@ namespace shine
 
                 set_decode_step(http::e_decode_header);
                 get_buf().clear();
+                get_buf_pos() = 0;
                 get_response().clear();
 
                 for (;;)
